@@ -1,21 +1,22 @@
 import React, { Component } from "react";
 import "./App.css";
 import { store } from './store';
+import { setActiveSession, updateCounter } from './actions'
+
 
 class App extends Component {
-  // state = {
-  //   days: 11,
-  //   hours: 31,
-  //   minutes: 27,
-  //   seconds: 11,
-  //   activeSession: "DAYS"
-  // };
-
   render() {
-    // const { days, hours, minutes, seconds, activeSession } = this.state;
-    const setActiveSession = e => {
-      this.setState({ activeSession: e.target.value });
+    const handleActiveSession = e => {
+      console.log(e.target.value)
+      store.dispatch(setActiveSession(e.target.value))
     };
+
+    const handleCounter = e => {
+      const type = e.target.dataset.type
+      store.dispatch(updateCounter(type, store.getState().activeSession))
+    }
+
+
     return (
       <div className="App">
         <header>
@@ -31,7 +32,7 @@ class App extends Component {
               <span className="Counter__text--grey">ACTIVE SESSION: </span>
               <select
                 className="Counter__text--grey"
-                onChange={setActiveSession}
+                onChange={handleActiveSession}
                 value={store.getState().activeSession}
               >
                 <option>DAYS</option>
@@ -78,10 +79,10 @@ class App extends Component {
             </div>
           </main>
           <div className="App__buttons">
-            <button className="App__text--white" data-type="INCREASE_COUNTER">
+            <button className="App__text--white" data-type="INCREASE_COUNTER" onClick={handleCounter}>
               INCREASE
             </button>
-            <button className="App__text--white" data-type="DECREASE_COUNTER">
+            <button className="App__text--white" data-type="DECREASE_COUNTER" onClick={handleCounter}>
               DECREASE
             </button>
           </div>
